@@ -1,0 +1,17 @@
+def display_basic_info(df):
+
+    print(f"shape: {df.shape}")
+    print(f"columns: {list(df.columns)}")
+    print(f"duplicates: {df.duplicated().sum()}")
+    print()
+    print("INFO:")
+    df.info()
+    print()
+    print("NULLS:")
+    print(df.isna().sum())
+    print()
+    print("UNIQUE")
+    print(df.nunique())
+    print()
+    print("DESCRIBE:")
+    print(df.describe())
