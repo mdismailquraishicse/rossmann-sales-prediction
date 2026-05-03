@@ -29,7 +29,9 @@ class TrainingPipeline:
         train = df.iloc[:size]
         test = df.iloc[size:]
 
-        self.feature_transformer.fit(train.copy())
+        transformer = self.feature_transformer.fit(train.copy())
+        joblib.dump(transformer, "src/models/feature_transformer.pkl")
+
         train_transformed = self.feature_transformer.transform(train)
         test_transformed = self.feature_transformer.transform(test)
 
@@ -53,3 +55,4 @@ class TrainingPipeline:
 
         joblib.dump(model, "src/models/random_forest_v1.pkl")
         # model = joblib.load("model.pkl")
+        return model, transformer
