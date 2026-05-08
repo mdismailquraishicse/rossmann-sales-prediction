@@ -30,18 +30,18 @@ class TrainingPipeline:
         test = df.iloc[size:]
 
         transformer = self.feature_transformer.fit(train.copy())
-        joblib.dump(transformer, "src/models/feature_transformer.pkl")
+        joblib.dump(transformer, "../src/models/feature_transformer.pkl")
 
-        train_transformed = self.feature_transformer.transform(train)
-        test_transformed = self.feature_transformer.transform(test)
+        train_transformed = self.feature_transformer.transform(train.drop("sales", axis=1))
+        test_transformed = self.feature_transformer.transform(test.drop("sales", axis=1))
 
-        X_train = train_transformed.drop("sales", axis=1)
-        y_train = train_transformed["sales"]
+        X_train = train_transformed
+        y_train = train["sales"]
 
-        X_test = test_transformed.drop("sales", axis=1)
-        y_test = test_transformed["sales"]
+        X_test = test_transformed
+        y_test = test["sales"]
 
-        model, result = self.trainer.train(X_train=X_train, y_train=y_train)
+        model, result = self.trainer.train(X_train=X_train, y_train=y_train, X_val=X_test, y_val=y_test)
 
 
         train_prediction = model.predict(X_train)
@@ -53,6 +53,5 @@ class TrainingPipeline:
         print(f"train mae: {train_mae}")
         print(f"test mae : {test_mae}")
 
-        joblib.dump(model, "src/models/random_forest_v1.pkl")
-        # model = joblib.load("model.pkl")
+        joblib.dump(model, "../src/models/random_forest_v1.pkl")
         return model, transformer
