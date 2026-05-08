@@ -18,6 +18,8 @@ class FeatureTransformer:
     def fit(self, df: pd.DataFrame):
 
         df = df.copy()
+        if "sales" in df.columns:
+            df = df.drop("sales", axis=1)
 
         # type conversions (safe here)
         df["stateholiday"] = df["stateholiday"].astype(str)
@@ -37,7 +39,10 @@ class FeatureTransformer:
 
 
     def transform(self, df: pd.DataFrame):
+
         df = df.copy()
+        if "sales" in df.columns:
+            df = df.drop("sales", axis=1)
 
         df["stateholiday"] = df["stateholiday"].astype(str)
         df["schoolholiday"] = df["schoolholiday"].astype(int)
