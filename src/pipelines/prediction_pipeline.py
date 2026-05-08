@@ -13,8 +13,8 @@ class PredictionPipeline:
     def __init__(self):
         
         self._required_columns = {'store', 'dayofweek', 'date', 'promo', 'stateholiday', 'schoolholiday'}
-        self.model = joblib.load("src/models/random_forest_v1.pkl")
-        self.transformer = joblib.load("src/models/feature_transformer.pkl")
+        self.model = joblib.load("../src/models/random_forest_v1.pkl")
+        self.transformer = joblib.load("../src/models/feature_transformer.pkl")
         self.feature_engineering = FeatureEngineering()
 
 
@@ -29,6 +29,7 @@ class PredictionPipeline:
         """
 
         if not self._required_columns.issubset(df.columns):
+            print(f"required columns: {list(self._required_columns)}")
             return f"column miss-matched: {list(df.columns)}"
 
         df.columns = [col.lower().strip() for col in df.columns]
