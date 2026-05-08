@@ -13,8 +13,8 @@ class PredictionPipeline:
     def __init__(self):
         
         self._required_columns = {'store', 'dayofweek', 'date', 'promo', 'stateholiday', 'schoolholiday'}
-        self.model = joblib.load("../src/models/random_forest_v1.pkl")
-        self.transformer = joblib.load("../src/models/feature_transformer.pkl")
+        self.model = joblib.load("src/models/random_forest_v1.pkl")
+        self.transformer = joblib.load("src/models/feature_transformer.pkl")
         self.feature_engineering = FeatureEngineering()
 
 
