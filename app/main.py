@@ -1,12 +1,22 @@
-import joblib
 import pandas as pd
 from fastapi import FastAPI
 from pydantic import BaseModel
-from datetime import datetime
 from src.pipelines.prediction_pipeline import PredictionPipeline
+
+from fastapi.middleware.cors import CORSMiddleware
+
 
 
 app = FastAPI(title="Rossmann Sales Prediction API")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # React frontend URL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 prediction_pipeline = PredictionPipeline()
 
@@ -17,7 +27,7 @@ class PredictionInput(BaseModel):
     promo: int
     state_holiday:str
     school_holiday: int
-    date: datetime
+    date: str
 
 
 @app.get("/")
@@ -34,7 +44,7 @@ def predict(data: PredictionInput):
         "promo": data.promo,
         "stateholiday": data.state_holiday,
         "schoolholiday": data.school_holiday,
-        "date": data.date
+        "date": pd.to_datetime(data.date)
     }])
 
 
